@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("question")
+@CrossOrigin(origins = "http://localhost:3000")
 public class QuestionController {
     @Autowired
     QuestionService questionService;
