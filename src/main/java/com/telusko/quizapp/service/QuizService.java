@@ -60,12 +60,24 @@ public class QuizService {
         List<Question> questions = quiz.getQuestions();
         int right = 0;
         int i=0;
-        for(Response response: responses){
-            if(response.getResponse().equals(questions.get(i).getCorrectAnswer())){
-               right++;
+        for (Response response : responses) {
+            for (Question question : questions) {
+                if (response.getId().equals(question.getId()) && response.getResponse().equals(question.getCorrectAnswer())) {
+                    right++;
+                    break; // Move to the next response once a match is found
+                }
             }
-            i++;
         }
         return new ResponseEntity<>(right,HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<Quiz>> getAllQuiz() {
+        try {
+            return new ResponseEntity<>(quizDao.findAll(), HttpStatus.OK);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
     }
 }
