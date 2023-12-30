@@ -3,16 +3,15 @@ package com.telusko.quizapp.service;
 
 import com.telusko.quizapp.dao.QuestionDao;
 import com.telusko.quizapp.dao.QuizDao;
-import com.telusko.quizapp.model.Question;
-import com.telusko.quizapp.model.QuestionWrapper;
-import com.telusko.quizapp.model.Quiz;
-import com.telusko.quizapp.model.Response;
+import com.telusko.quizapp.dao.ScoreDao;
+import com.telusko.quizapp.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +21,8 @@ public class QuizService {
     QuizDao quizDao;
     @Autowired
     QuestionDao questionDao;
+    @Autowired
+    ScoreDao scoreDao;
 
     public ResponseEntity<String> createQuiz(String category, int numQ, String title) {
 
@@ -67,13 +68,35 @@ public class QuizService {
                     break; // Move to the next response once a match is found
                 }
             }
+            i++;
         }
+        // Store in table, model work to be done Quiz Score, Username (Hardcoded), Current Date Time, quiz title, quiz id
+        // Quiz Score Screen (Front end)
+
+        QuizScore quizScore = new QuizScore();
+        quizScore.setName("Rayyan"); // To be replaced by login username
+        quizScore.setScore(right);
+        quizScore.setAttemptedon(new Date());
+        quizScore.setTotalscore(i);
+
+        scoreDao.save(quizScore);
+
+
         return new ResponseEntity<>(right,HttpStatus.OK);
     }
 
     public ResponseEntity<List<Quiz>> getAllQuiz() {
         try {
             return new ResponseEntity<>(quizDao.findAll(), HttpStatus.OK);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+    }
+    public ResponseEntity<List<QuizScore>> getAllQuizScore() {
+        try {
+            return new ResponseEntity<>(scoreDao.findAll(), HttpStatus.OK);
         }
         catch (Exception e){
             e.printStackTrace();
