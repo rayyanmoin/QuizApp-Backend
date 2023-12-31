@@ -70,4 +70,16 @@ public class QuestionService {
     }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
     }
+
+    public ResponseEntity<List<Object[]>> getCategorybyCount() {
+        try{
+            return new ResponseEntity<>(questionDao.findCategorybyCount(),HttpStatus.OK);
+
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+    }
+
 }

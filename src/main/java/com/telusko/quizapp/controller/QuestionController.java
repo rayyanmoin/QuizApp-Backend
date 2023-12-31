@@ -21,6 +21,12 @@ public class QuestionController {
 
     }
 
+    @GetMapping("categorycount")
+    public ResponseEntity<List<Object[]>> getCategorybyCount(){
+        return questionService.getCategorybyCount();
+
+    }
+
 
     @GetMapping("category/{category}")
     public ResponseEntity<List<Question>> getQuestionbyCategory(@PathVariable String category){
