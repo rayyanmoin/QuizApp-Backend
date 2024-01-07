@@ -56,7 +56,7 @@ public class QuizService {
     }
 
 
-    public ResponseEntity<Integer> calculateResult(Integer id, List<Response> responses) {
+    public ResponseEntity<Integer> calculateResult(Integer id, List<Response> responses,String username) {
         Quiz quiz = quizDao.findById(id).get();
         List<Question> questions = quiz.getQuestions();
         int right = 0;
@@ -74,7 +74,7 @@ public class QuizService {
         // Quiz Score Screen (Front end)
 
         QuizScore quizScore = new QuizScore();
-        quizScore.setName("Rayyan"); // To be replaced by login username
+        quizScore.setName(username); // To be replaced by login username
         quizScore.setScore(right);
         quizScore.setAttemptedon(new Date());
         quizScore.setTotalscore(i);
